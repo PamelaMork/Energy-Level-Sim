@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hydrogen Energy Levels — Stage 1 Static Scaffold</title>
+  <style>
+    :root{
+      --bg:#000;
+      --fg:#fff;
+      --panel1:#132238;
+      --panel2:#23405f;
+      --btn:#d9d9d9;
+      --btn-hover:#fff;
+      --btn-run:#4da3ff;
+      --btn-clear:#7fa9d9;
+      --btn-start:#5ec8a7;
+      --btn-end:#f26b6b;
+      --electron:#ff3b30;
+      --photon:#ffd84d;
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--fg);
+      font-family:Arial, Helvetica, sans-serif;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:100vh;
+      padding:16px;
+    }
+
+    .frame{
+      width:min(1000px, 100%);
+      background:#000;
+    }
+
+    svg{
+      width:100%;
+      height:auto;
+      display:block;
+      background:#000;
+    }
+
+    .level-line{
+      stroke:#fff;
+      stroke-width:2;
+    }
+
+    .panel{
+      fill:var(--panel1);
+      stroke:#fff;
+      stroke-width:1.2;
+    }
+
+    .panel.control{ fill:var(--panel2); }
+    .panel.abs{ fill:var(--panel2); }
+    .panel.em{ fill:var(--panel1); }
+
+    .mini-box{
+      fill:none;
+      stroke:#fff;
+      stroke-width:0.8;
+    }
+
+    .mini-box.black-fill{
+      fill:#000;
+    }
+
+    .title{
+      fill:#fff;
+      font-size:32px;
+      font-weight:700;
+      text-anchor:middle;
+    }
+
+    .label{
+      fill:#fff;
+      font-size:16px;
+    }
+
+    .label-small{
+      fill:#fff;
+      font-size:14px;
+    }
+
+    .label-medium{
+      fill:#fff;
+      font-size:20px;
+      font-weight:700;
+    }
+
+    .btn{
+      fill:var(--btn);
+      stroke:#000;
+      stroke-width:1;
+      rx:6;
+      ry:6;
+      cursor:pointer;
+    }
+
+    .start-btn-selected{
+      fill:#7CFC90;
+      stroke:#228B22;
+      stroke-width:2;
+      rx:6;
+      ry:6;
+      cursor:pointer;
+    }
+
+    .end-btn-selected{
+      fill:#FF7F7F;
+      stroke:#CD5C5C;
+      stroke-width:2;
+      rx:6;
+      ry:6;
+      cursor:pointer;
+    }
+
+    .btn-text{
+      fill:#000;
+      font-size:14px;
+      text-anchor:middle;
+      dominant-baseline:middle;
+      user-select:none;
+    }
+
+    .selected-btn-text{
+      fill:#000;
+      font-size:14px;
+      text-anchor:middle;
+      dominant-baseline:middle;
+      user-select:none;
+      font-weight:700;
+    }
+
+    .btn-wide-text{
+      fill:#000;
+      font-size:16px;
+      text-anchor:middle;
+      dominant-baseline:middle;
+      user-select:none;
+    }
+
+.run-btn{
+  fill:#4da3ff;
+  stroke:#4a4a4a;
+  stroke-width:1;
+  cursor:pointer;
+}
+
+.run-btn-text{
+  fill:#ffffff;
+  font-size:16px;
+  text-anchor:middle;
+  dominant-baseline:middle;
+  user-select:none;
+  font-weight:600;
+}
+
+
+.reset-btn{
+  fill:#a9c4e8;
+  stroke:#4a4a4a;
+  stroke-width:1;
+  cursor:pointer;
+}
+
+.reset-btn-text{
+  fill:#10243d;
+  font-size:16px;
+  text-anchor:middle;
+  dominant-baseline:middle;
+  user-select:none;
+  font-weight:600;
+}
+
+    .electron{
+      fill:var(--electron);
+      stroke:var(--electron);
+      stroke-width:1;
+    }
+
+    .nucleus{
+      fill:#fff;
+      stroke:#fff;
+      stroke-width:1;
+    }
+
+    .photon{
+      fill:var(--photon);
+      stroke:var(--photon);
+      stroke-width:0.8;
+    }
+
+    .results-value{
+      fill:#fff;
+      font-size:15px;
+    }
+
+    .placeholder{
+      opacity:0.95;
+    }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <svg viewBox="0 0 1000 800" aria-label="Hydrogen energy levels static scaffold">
+      <defs>
+        <linearGradient id="absorption-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#6a0dad" />
+          <stop offset="10%" stop-color="#4b00ff" />
+          <stop offset="22%" stop-color="#0066ff" />
+          <stop offset="38%" stop-color="#00c8ff" />
+          <stop offset="52%" stop-color="#00cc44" />
+          <stop offset="68%" stop-color="#ffee00" />
+          <stop offset="82%" stop-color="#ff9900" />
+          <stop offset="100%" stop-color="#d40000" />
+        </linearGradient>
+      </defs>
+
+      <!-- Title -->
+      <text x="500" y="50" class="title">Hydrogen Energy Levels</text>
+
+      <!-- Energy levels -->
+<g id="energy-levels">
+  <g>
+    <title>n = 1, E = -13.60 eV</title>
+    <line x1="88" x2="300" y1="470" y2="470" class="level-line"/>
+    <text x="320" y="474" class="label">n = 1</text>
+  </g>
+
+  <g>
+    <title>n = 2, E = -3.40 eV</title>
+    <line x1="88" x2="300" y1="323" y2="323" class="level-line"/>
+    <text x="320" y="327" class="label">n = 2</text>
+  </g>
+
+  <g>
+    <title>n = 3, E = -1.51 eV</title>
+    <line x1="88" x2="300" y1="217" y2="217" class="level-line"/>
+    <text x="320" y="221" class="label">n = 3</text>
+  </g>
+
+  <g>
+    <title>n = 4, E = -0.85 eV</title>
+    <line x1="88" x2="300" y1="143" y2="143" class="level-line"/>
+    <text x="320" y="147" class="label">n = 4</text>
+  </g>
+
+  <g>
+    <title>n = 5, E = -0.54 eV</title>
+    <line x1="88" x2="300" y1="107" y2="107" class="level-line"/>
+    <text x="320" y="111" class="label">n = 5</text>
+  </g>
+
+  <g>
+    <title>n = 6, E = -0.38 eV</title>
+    <line x1="88" x2="300" y1="87" y2="87" class="level-line"/>
+    <text x="320" y="91" class="label">n = 6</text>
+  </g>
+</g>
+
+      <!-- Nucleus / electron / parked photon -->
+      <circle cx="194" cy="530" r="6" class="nucleus"/>
+      <text x="194" y="563" style="fill:#fff;font-size:16px;text-anchor:middle;">nucleus</text>
+
+      <circle cx="194" cy="470" r="9" class="electron"/>
+      <circle cx="40" cy="40" r="7" class="photon" opacity="0"/>
+
+      <!-- Results panel -->
+      <g id="results-panel">
+        <rect x="406" y="330" width="306" height="235" rx="10" ry="10" class="panel"/>
+        <text x="420" y="362" class="label-medium">Results</text>
+
+        <text x="420" y="397" class="results-value placeholder" font-weight="700">Process:</text>
+        <text id="process-value" x="545" y="397" class="results-value placeholder">Select levels</text>
+
+        <text x="420" y="435" class="results-value placeholder" font-weight="700">&#916;E:</text>
+        <text id="deltae-value" x="545" y="435" class="results-value placeholder">N/A</text>
+
+        <text x="420" y="473" class="results-value placeholder" font-weight="700">Wavelength:</text>
+        <text id="wavelength-value" x="545" y="473" class="results-value placeholder">N/A</text>
+
+        <text x="420" y="511" class="results-value placeholder" font-weight="700">Region:</text>
+        <text id="region-value" x="545" y="511" class="results-value placeholder">N/A</text>
+
+<text x="420" y="549" class="results-value placeholder" font-weight="700">Series:</text>
+<text id="series-value" x="545" y="549" class="results-value placeholder">N/A</text>
+      </g>
+
+      <!-- Control panel -->
+      <g id="control-panel">
+        <rect x="406" y="105" width="306" height="205" rx="10" ry="10" class="panel control"/>
+        <text x="420" y="136" class="label-medium">Control Panel</text>
+
+        <text x="420" y="180" class="label-small">Start level:</text>
+        <text x="420" y="230" class="label-small">End level:</text>
+
+        <!-- Start buttons -->
+        <g id="start-buttons">
+          <g id="start-btn-1" transform="translate(520,160)">
+            <rect id="start-rect-1" width="25" height="25" class="btn"/>
+            <text id="start-text-1" x="12.5" y="13" class="btn-text">1</text>
+          </g>
+          <g id="start-btn-2" transform="translate(551,160)">
+            <rect id="start-rect-2" width="25" height="25" class="btn"/>
+            <text id="start-text-2" x="12.5" y="13" class="btn-text">2</text>
+          </g>
+          <g id="start-btn-3" transform="translate(582,160)">
+            <rect id="start-rect-3" width="25" height="25" class="btn"/>
+            <text id="start-text-3" x="12.5" y="13" class="btn-text">3</text>
+          </g>
+          <g id="start-btn-4" transform="translate(613,160)">
+            <rect id="start-rect-4" width="25" height="25" class="btn"/>
+            <text id="start-text-4" x="12.5" y="13" class="btn-text">4</text>
+          </g>
+          <g id="start-btn-5" transform="translate(644,160)">
+            <rect id="start-rect-5" width="25" height="25" class="btn"/>
+            <text id="start-text-5" x="12.5" y="13" class="btn-text">5</text>
+          </g>
+          <g id="start-btn-6" transform="translate(675,160)">
+            <rect id="start-rect-6" width="25" height="25" class="btn"/>
+            <text id="start-text-6" x="12.5" y="13" class="btn-text">6</text>
+          </g>
+        </g>
+
+        <!-- End buttons -->
+        <g id="end-buttons">
+          <g id="end-btn-1" transform="translate(520,215)">
+            <rect id="end-rect-1" width="25" height="25" class="btn"/>
+            <text id="end-text-1" x="12.5" y="13" class="btn-text">1</text>
+          </g>
+          <g id="end-btn-2" transform="translate(551,215)">
+            <rect id="end-rect-2" width="25" height="25" class="btn"/>
+            <text id="end-text-2" x="12.5" y="13" class="btn-text">2</text>
+          </g>
+          <g id="end-btn-3" transform="translate(582,215)">
+            <rect id="end-rect-3" width="25" height="25" class="btn"/>
+            <text id="end-text-3" x="12.5" y="13" class="btn-text">3</text>
+          </g>
+          <g id="end-btn-4" transform="translate(613,215)">
+            <rect id="end-rect-4" width="25" height="25" class="btn"/>
+            <text id="end-text-4" x="12.5" y="13" class="btn-text">4</text>
+          </g>
+          <g id="end-btn-5" transform="translate(644,215)">
+            <rect id="end-rect-5" width="25" height="25" class="btn"/>
+            <text id="end-text-5" x="12.5" y="13" class="btn-text">5</text>
+          </g>
+          <g id="end-btn-6" transform="translate(675,215)">
+            <rect id="end-rect-6" width="25" height="25" class="btn"/>
+            <text id="end-text-6" x="12.5" y="13" class="btn-text">6</text>
+          </g>
+        </g>
+
+        <!-- Run button -->
+<g id="run-button" transform="translate(435,265)" style="cursor:pointer;">
+  <rect width="138" height="34" rx="6" ry="6" class="run-btn"/>
+  <text x="69" y="17" class="run-btn-text">Run Transition</text>
+</g>
+
+        <!-- Reset button -->
+<g id="clear-button" transform="translate(610,265)" style="cursor:pointer;">
+  <rect width="78" height="34" rx="6" ry="6" class="reset-btn"/>
+  <text x="39" y="17" class="reset-btn-text">Reset</text>
+</g>
+      </g>
+
+      <!-- Spectrum panels -->
+      <g id="spectra">
+        <rect x="753" y="128" width="219" height="190" rx="10" ry="10" class="panel abs"/>
+        <text x="764" y="147" class="label-small" style="font-weight:700;">Absorption Spectrum</text>
+
+        <rect x="753" y="337" width="219" height="190" rx="10" ry="10" class="panel em"/>
+        <text x="764" y="356" class="label-small" style="font-weight:700;">Emission Spectrum</text>
+
+        <!-- Absorption display -->
+        <rect x="767" y="190" width="191" height="83" fill="url(#absorption-gradient)" rx="4" />
+        <rect x="767" y="190" width="191" height="83" rx="4" ry="4" class="mini-box"/>
+
+        <!-- Emission display -->
+        <rect x="767" y="399" width="191" height="83" rx="4" ry="4" class="mini-box black-fill"/>
+        <rect x="767" y="399" width="191" height="83" rx="4" ry="4" class="mini-box"/>
+
+        <!-- Axis labels -->
+        <text x="767" y="289" class="label-small">UV</text>
+        <text x="862.5" y="289" class="label-small" text-anchor="middle">Visible</text>
+        <text x="958" y="289" class="label-small" text-anchor="end">IR</text>
+
+        <text x="767" y="498" class="label-small">UV</text>
+        <text x="862.5" y="498" class="label-small" text-anchor="middle">Visible</text>
+        <text x="958" y="498" class="label-small" text-anchor="end">IR</text>
+      </g>
+    </svg>
+  </div>
+
+
+
+
+<script>
+  let selectedStartLevel = null;
+  let selectedEndLevel = null;
+  let isAnimating = false;
+  let hasRunCurrentSelection = false;
+
+  const electron = document.querySelector('.electron');
+  const photon = document.querySelector('.photon');
+  const svg = document.querySelector('svg');
+  const runButton = document.getElementById('run-button');
+  const clearButton = document.getElementById('clear-button');
+
+  const electronX = 194;
+  const photonOffscreenLeftX = -30;
+
+  const levelY = {
+    1: 470,
+    2: 323,
+    3: 217,
+    4: 143,
+    5: 107,
+    6: 87
+  };
+
+  const electronBaseY = 470;
+
+  const absorptionBox = {
+    x: 767,
+    y: 190,
+    width: 191,
+    height: 83
+  };
+
+  const emissionBox = {
+    x: 767,
+    y: 399,
+    width: 191,
+    height: 83
+  };
+
+  const absorbanceLines = [];
+  const emissionLines = [];
+
+  const defaultPhotonFill = getComputedStyle(photon).fill || '#ffd54f';
+  const defaultPhotonStroke = getComputedStyle(photon).stroke || 'none';
+
+  function hydrogenEnergy(level) {
+    return -13.6 / (level * level);
+  }
+
+  function transitionRegion(wavelengthNm) {
+    if (wavelengthNm < 400) {
+      return 'UV';
+    } else if (wavelengthNm <= 700) {
+      return 'Visible';
+    } else {
+      return 'IR';
+    }
+  }
+
+  function wavelengthToSpectrumX(wavelengthNm, box) {
+    const minWavelength = 400;
+    const maxWavelength = 700;
+
+    const clamped = Math.max(minWavelength, Math.min(maxWavelength, wavelengthNm));
+    const fraction = (clamped - minWavelength) / (maxWavelength - minWavelength);
+
+    return box.x + fraction * box.width;
+  }
+
+  function wavelengthToColor(wavelengthNm) {
+    if (wavelengthNm < 400 || wavelengthNm > 700) {
+      return '#000000';
+    } else if (wavelengthNm < 450) {
+      return '#8a2be2';
+    } else if (wavelengthNm < 485) {
+      return '#1e90ff';
+    } else if (wavelengthNm < 500) {
+      return '#00bcd4';
+    } else if (wavelengthNm < 565) {
+      return '#00c853';
+    } else if (wavelengthNm < 590) {
+      return '#ffd600';
+    } else if (wavelengthNm < 625) {
+      return '#ff8f00';
+    } else {
+      return '#d50000';
+    }
+  }
+
+  function setPhotonDefaultColor() {
+    photon.style.fill = defaultPhotonFill;
+    photon.style.stroke = defaultPhotonStroke;
+  }
+
+  function setPhotonVisibleColor(wavelengthNm) {
+    const color = wavelengthToColor(wavelengthNm);
+    photon.style.fill = color;
+    photon.style.stroke = color;
+  }
+
+  function setPhotonColorFromResult(result) {
+    if (result && result.wavelengthNm !== null && result.region === 'Visible') {
+      setPhotonVisibleColor(result.wavelengthNm);
+    } else {
+      setPhotonDefaultColor();
+    }
+  }
+
+  function createAbsorbanceLine(wavelengthNm) {
+    const x = wavelengthToSpectrumX(wavelengthNm, absorptionBox);
+
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    line.setAttribute('x1', x);
+    line.setAttribute('x2', x);
+    line.setAttribute('y1', absorptionBox.y + 3);
+    line.setAttribute('y2', absorptionBox.y + absorptionBox.height - 3);
+    line.setAttribute('stroke', '#000');
+    line.setAttribute('stroke-width', '4');
+    line.setAttribute('stroke-linecap', 'round');
+    line.setAttribute('opacity', '0');
+
+    svg.appendChild(line);
+    absorbanceLines.push(line);
+
+    return line;
+  }
+
+  function createEmissionLine(wavelengthNm) {
+    const x = wavelengthToSpectrumX(wavelengthNm, emissionBox);
+    const color = wavelengthToColor(wavelengthNm);
+
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    line.setAttribute('x1', x);
+    line.setAttribute('x2', x);
+    line.setAttribute('y1', emissionBox.y + 3);
+    line.setAttribute('y2', emissionBox.y + emissionBox.height - 3);
+    line.setAttribute('stroke', color);
+    line.setAttribute('stroke-width', '4');
+    line.setAttribute('stroke-linecap', 'round');
+    line.setAttribute('opacity', '0');
+
+    svg.appendChild(line);
+    emissionLines.push(line);
+
+    return line;
+  }
+
+  function fadeInLine(line, durationMs) {
+    return new Promise((resolve) => {
+      const startTime = performance.now();
+
+      function step(currentTime) {
+        const elapsed = currentTime - startTime;
+        const t = Math.min(elapsed / durationMs, 1);
+
+        line.setAttribute('opacity', t.toString());
+
+        if (t < 1) {
+          requestAnimationFrame(step);
+        } else {
+          resolve();
+        }
+      }
+
+      requestAnimationFrame(step);
+    });
+  }
+
+  function fadeInAbsorbanceLine(wavelengthNm, durationMs) {
+    const line = createAbsorbanceLine(wavelengthNm);
+    return fadeInLine(line, durationMs);
+  }
+
+  function fadeInEmissionLine(wavelengthNm, durationMs) {
+    const line = createEmissionLine(wavelengthNm);
+    return fadeInLine(line, durationMs);
+  }
+
+  function clearSpectrumLines() {
+    while (absorbanceLines.length > 0) {
+      const line = absorbanceLines.pop();
+      line.remove();
+    }
+
+    while (emissionLines.length > 0) {
+      const line = emissionLines.pop();
+      line.remove();
+    }
+  }
+
+  function setPhotonPosition(x, y) {
+    photon.setAttribute('cx', x);
+    photon.setAttribute('cy', y);
+  }
+
+  function showPhoton() {
+    photon.setAttribute('opacity', '1');
+  }
+
+  function hidePhoton() {
+    photon.setAttribute('opacity', '0');
+  }
+
+  function animatePhoton(xStart, yStart, xEnd, yEnd, durationMs) {
+    return new Promise((resolve) => {
+      const startTime = performance.now();
+
+      setPhotonPosition(xStart, yStart);
+      showPhoton();
+
+      function step(currentTime) {
+        const elapsed = currentTime - startTime;
+        const t = Math.min(elapsed / durationMs, 1);
+
+        const x = xStart + (xEnd - xStart) * t;
+        const y = yStart + (yEnd - yStart) * t;
+
+        setPhotonPosition(x, y);
+
+        if (t < 1) {
+          requestAnimationFrame(step);
+        } else {
+          resolve();
+        }
+      }
+
+      requestAnimationFrame(step);
+    });
+  }
+
+  function moveElectronToLevel(level, durationMs = 450) {
+    return new Promise((resolve) => {
+      const targetY = levelY[level];
+      const deltaY = targetY - electronBaseY;
+
+      electron.style.transition = `transform ${durationMs}ms ease`;
+      electron.style.transform = `translate(0px, ${deltaY}px)`;
+
+      setTimeout(resolve, durationMs);
+    });
+  }
+
+  function resetResults() {
+    document.getElementById('process-value').textContent = 'Select levels, then run';
+    document.getElementById('deltae-value').textContent = 'N/A';
+    document.getElementById('wavelength-value').textContent = 'N/A';
+    document.getElementById('region-value').textContent = 'N/A';
+  }
+
+  function updateResults() {
+    const processText = document.getElementById('process-value');
+    const deltaEText = document.getElementById('deltae-value');
+    const wavelengthText = document.getElementById('wavelength-value');
+    const regionText = document.getElementById('region-value');
+
+    if (selectedStartLevel === null || selectedEndLevel === null) {
+      resetResults();
+      return null;
+    }
+
+    const deltaE = hydrogenEnergy(selectedEndLevel) - hydrogenEnergy(selectedStartLevel);
+
+    if (deltaE > 0) {
+      processText.textContent = 'Absorption';
+    } else if (deltaE < 0) {
+      processText.textContent = 'Emission';
+    } else {
+      processText.textContent = 'No change';
+    }
+
+    deltaEText.textContent = `${deltaE.toFixed(2)} eV`;
+
+    if (deltaE === 0) {
+      wavelengthText.textContent = 'N/A';
+      regionText.textContent = 'N/A';
+      return {
+        deltaE: deltaE,
+        wavelengthNm: null,
+        region: null
+      };
+    } else {
+      const wavelengthNm = 1240 / Math.abs(deltaE);
+      const region = transitionRegion(wavelengthNm);
+
+      wavelengthText.textContent = `${wavelengthNm.toFixed(1)} nm`;
+      regionText.textContent = region;
+
+      return {
+        deltaE: deltaE,
+        wavelengthNm: wavelengthNm,
+        region: region
+      };
+    }
+  }
+
+  function setRunButtonEnabled(enabled) {
+    const rect = runButton.querySelector('rect');
+    const text = runButton.querySelector('text');
+
+    runButton.style.pointerEvents = enabled ? 'auto' : 'none';
+    runButton.style.opacity = enabled ? '1' : '0.55';
+
+    if (rect) rect.setAttribute('class', 'run-btn');
+    if (text) text.setAttribute('class', 'run-btn-text');
+  }
+
+  function refreshRunButtonState() {
+    const readyToRun =
+      !isAnimating &&
+      selectedStartLevel !== null &&
+      selectedEndLevel !== null &&
+      !hasRunCurrentSelection;
+
+    setRunButtonEnabled(readyToRun);
+  }
+
+  function markSelectionChanged() {
+    hasRunCurrentSelection = false;
+    refreshRunButtonState();
+  }
+
+  function clearStartSelection() {
+    for (let i = 1; i <= 6; i++) {
+      document.getElementById(`start-rect-${i}`).setAttribute('class', 'btn');
+      document.getElementById(`start-text-${i}`).setAttribute('class', 'btn-text');
+    }
+  }
+
+  function clearEndSelection() {
+    for (let i = 1; i <= 6; i++) {
+      document.getElementById(`end-rect-${i}`).setAttribute('class', 'btn');
+      document.getElementById(`end-text-${i}`).setAttribute('class', 'btn-text');
+    }
+  }
+
+  function clearAll() {
+    if (isAnimating) return;
+
+    clearStartSelection();
+    clearEndSelection();
+    selectedStartLevel = null;
+    selectedEndLevel = null;
+    hasRunCurrentSelection = false;
+
+    moveElectronToLevel(1, 450);
+    setPhotonPosition(photonOffscreenLeftX, levelY[1]);
+    setPhotonDefaultColor();
+    hidePhoton();
+    clearSpectrumLines();
+    resetResults();
+    refreshRunButtonState();
+  }
+
+  function selectStart(level) {
+    if (isAnimating) return;
+
+    clearStartSelection();
+    document.getElementById(`start-rect-${level}`).setAttribute('class', 'start-btn-selected');
+    document.getElementById(`start-text-${level}`).setAttribute('class', 'selected-btn-text');
+
+    selectedStartLevel = level;
+    moveElectronToLevel(level, 450);
+    setPhotonPosition(photonOffscreenLeftX, levelY[level]);
+    setPhotonDefaultColor();
+    hidePhoton();
+    markSelectionChanged();
+  }
+
+  function selectEnd(level) {
+    if (isAnimating) return;
+
+    clearEndSelection();
+    document.getElementById(`end-rect-${level}`).setAttribute('class', 'end-btn-selected');
+    document.getElementById(`end-text-${level}`).setAttribute('class', 'selected-btn-text');
+
+    selectedEndLevel = level;
+    markSelectionChanged();
+  }
+
+  async function runTransition() {
+    if (isAnimating) return;
+    if (selectedStartLevel === null || selectedEndLevel === null) {
+      resetResults();
+      refreshRunButtonState();
+      return;
+    }
+
+    isAnimating = true;
+    refreshRunButtonState();
+
+    const result = updateResults();
+    const startY = levelY[selectedStartLevel];
+
+    try {
+      if (selectedEndLevel > selectedStartLevel) {
+        setPhotonColorFromResult(result);
+
+        setPhotonPosition(photonOffscreenLeftX, startY);
+        await animatePhoton(photonOffscreenLeftX, startY, electronX - 14, startY, 1200);
+        hidePhoton();
+
+        if (
+          result &&
+          result.wavelengthNm !== null &&
+          result.region === 'Visible'
+        ) {
+          await Promise.all([
+            moveElectronToLevel(selectedEndLevel, 1200),
+            fadeInAbsorbanceLine(result.wavelengthNm, 1200)
+          ]);
+        } else {
+          await moveElectronToLevel(selectedEndLevel, 1200);
+        }
+
+      } else if (selectedEndLevel < selectedStartLevel) {
+        setPhotonColorFromResult(result);
+
+        if (
+          result &&
+          result.wavelengthNm !== null &&
+          result.region === 'Visible'
+        ) {
+          setPhotonPosition(electronX - 14, startY);
+
+          await Promise.all([
+            animatePhoton(electronX - 14, startY, photonOffscreenLeftX, startY, 1200),
+            moveElectronToLevel(selectedEndLevel, 1200),
+            fadeInEmissionLine(result.wavelengthNm, 1200)
+          ]);
+
+          hidePhoton();
+        } else {
+          setPhotonPosition(electronX - 14, startY);
+
+          await Promise.all([
+            animatePhoton(electronX - 14, startY, photonOffscreenLeftX, startY, 1200),
+            moveElectronToLevel(selectedEndLevel, 1200)
+          ]);
+
+          hidePhoton();
+        }
+
+      } else {
+        setPhotonDefaultColor();
+        hidePhoton();
+      }
+
+      hasRunCurrentSelection = true;
+    } finally {
+      setPhotonDefaultColor();
+      isAnimating = false;
+      refreshRunButtonState();
+    }
+  }
+
+  for (let i = 1; i <= 6; i++) {
+    document.getElementById(`start-btn-${i}`).addEventListener('click', () => selectStart(i));
+    document.getElementById(`end-btn-${i}`).addEventListener('click', () => selectEnd(i));
+  }
+
+  runButton.addEventListener('click', runTransition);
+  clearButton.addEventListener('click', clearAll);
+
+  moveElectronToLevel(1, 0);
+  setPhotonPosition(photonOffscreenLeftX, levelY[1]);
+  setPhotonDefaultColor();
+  hidePhoton();
+  clearSpectrumLines();
+  resetResults();
+  refreshRunButtonState();
+</script>
+
+
+</body>
+</html>
