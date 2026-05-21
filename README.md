@@ -12,5 +12,8 @@ An interactive hydrogen energy-level simulation built for teaching.
 ## Live site
 https://pamelamork.github.io/Energy-Level-Sim/
 
+## Bio
+Pamela Mork is a chemistry professor and textbook author who builds teaching tools to help students visualize core chemical concepts.
+
 ## Notes
 This is a browser-based HTML/CSS/JavaScript simulation hosted with GitHub Pages.
