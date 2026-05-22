@@ -4,7 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Hydrogen Energy Levels</title>
-  <meta property="og:title" content="Hydrogen Energy Levels Simulation">
+
+<meta property="og:title" content="Hydrogen Energy Levels Simulation">
 <meta property="og:description" content="Interactive hydrogen energy-level simulator with absorption and emission spectra.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://pamelamork.github.io/Energy-Level-Sim/">
@@ -471,6 +472,14 @@
     }
   }
 
+  function emissionSeries(endLevel, process) {
+    if (process !== 'Emission') return 'N/A';
+    if (endLevel === 1) return 'Lyman';
+    if (endLevel === 2) return 'Balmer';
+    if (endLevel === 3) return 'Paschen';
+    return 'N/A';
+  }
+
   function wavelengthToSpectrumX(wavelengthNm, box) {
     const minWavelength = 400;
     const maxWavelength = 700;
@@ -528,7 +537,7 @@
     line.setAttribute('x2', x);
     line.setAttribute('y1', absorptionBox.y + 3);
     line.setAttribute('y2', absorptionBox.y + absorptionBox.height - 3);
-    line.setAttribute('stroke', '#000');
+    line.setAttribute('stroke', '#000000');
     line.setAttribute('stroke-width', '4');
     line.setAttribute('stroke-linecap', 'round');
     line.setAttribute('opacity', '0');
@@ -659,6 +668,7 @@
     document.getElementById('deltae-value').textContent = 'N/A';
     document.getElementById('wavelength-value').textContent = 'N/A';
     document.getElementById('region-value').textContent = 'N/A';
+    document.getElementById('series-value').textContent = 'N/A';
   }
 
   function updateResults() {
@@ -666,6 +676,7 @@
     const deltaEText = document.getElementById('deltae-value');
     const wavelengthText = document.getElementById('wavelength-value');
     const regionText = document.getElementById('region-value');
+    const seriesText = document.getElementById('series-value');
 
     if (selectedStartLevel === null || selectedEndLevel === null) {
       resetResults();
@@ -674,35 +685,43 @@
 
     const deltaE = hydrogenEnergy(selectedEndLevel) - hydrogenEnergy(selectedStartLevel);
 
+    let process = 'No change';
     if (deltaE > 0) {
-      processText.textContent = 'Absorption';
+      process = 'Absorption';
     } else if (deltaE < 0) {
-      processText.textContent = 'Emission';
-    } else {
-      processText.textContent = 'No change';
+      process = 'Emission';
     }
 
+    processText.textContent = process;
     deltaEText.textContent = `${deltaE.toFixed(2)} eV`;
+    seriesText.textContent = emissionSeries(selectedEndLevel, process);
 
     if (deltaE === 0) {
       wavelengthText.textContent = 'N/A';
       regionText.textContent = 'N/A';
+
       return {
         deltaE: deltaE,
         wavelengthNm: null,
-        region: null
+        region: null,
+        process: process,
+        series: emissionSeries(selectedEndLevel, process)
       };
     } else {
       const wavelengthNm = 1240 / Math.abs(deltaE);
       const region = transitionRegion(wavelengthNm);
+      const series = emissionSeries(selectedEndLevel, process);
 
       wavelengthText.textContent = `${wavelengthNm.toFixed(1)} nm`;
       regionText.textContent = region;
+      seriesText.textContent = series;
 
       return {
         deltaE: deltaE,
         wavelengthNm: wavelengthNm,
-        region: region
+        region: region,
+        process: process,
+        series: series
       };
     }
   }
@@ -883,7 +902,6 @@
   resetResults();
   refreshRunButtonState();
 </script>
-
 
 </body>
 </html>
